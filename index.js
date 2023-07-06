@@ -12,9 +12,7 @@ import { handleValidationErrors, checkAuth } from "./utils/index.js";
 import { UserController, PostController } from "./Controllers/index.js";
 
 mongoose
-  .connect(
-    "mongodb+srv://danshirayy:1234567Qq@cluster0.cawe89m.mongodb.net/lynadskins?retryWrites=true&w=majority"
-  )
+  .connect(process.env.MONGODB_URL)
   .then(() => {
     console.log("DB OK");
   })
@@ -24,6 +22,9 @@ const app = express();
 
 const storage = multer.diskStorage({
   destination: (_, __, cb) => {
+    if (!fs.existsSync("uploads")) {
+      fs.mkdirSync("uploads");
+    }
     cb(null, "uploads");
   },
   filename: (_, file, cb) => {
@@ -76,7 +77,7 @@ app.patch(
   PostController.update
 );
 
-app.listen(4444, (err) => {
+app.listen(process.env.PORT || 4444, (err) => {
   if (err) {
     return console.log(err);
   }
