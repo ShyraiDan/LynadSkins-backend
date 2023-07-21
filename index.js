@@ -40,6 +40,7 @@ app.use(express.json())
 app.use(cors())
 app.use('/uploads', express.static('uploads'))
 
+// auth / login
 app.post(
 	'/auth/login',
 	loginValidation,
@@ -53,13 +54,17 @@ app.post(
 	UserController.register
 )
 app.get('/auth/me', checkAuth, UserController.getMe)
+app.patch('/auth/me', checkAuth, UserController.update)
 
+app.post('/userMoney', UserController.getMoney)
+app.patch('/userMoney', UserController.updateMoney)
+
+// posts
 app.post('/upload', checkAuth, upload.single('image'), (req, res) => {
 	res.json({
 		url: `/uploads/${req.file.originalname}`,
 	})
 })
-
 app.get('/posts', PostController.getAll)
 app.get('/tags', PostController.getLastTags)
 app.get('/posts/:id', PostController.getOne)
@@ -79,9 +84,11 @@ app.patch(
 	PostController.update
 )
 
+// skins
 app.get('/skins', SkinController.getAll)
 app.post('/skins', checkAuth, SkinController.create)
 app.get('/myskins', checkAuth, SkinController.getUserSkins)
+app.patch('/skins/:id', checkAuth, SkinController.updateSkin)
 
 app.listen(4444, (err) => {
 	if (err) {

@@ -49,6 +49,10 @@ const SkinSchema = new mongoose.Schema({
 		type: String,
 		required: true,
 	},
+	onTrade: {
+		type: Boolean,
+		default: false,
+	},
 })
 
 export default mongoose.model('Skin', SkinSchema)
