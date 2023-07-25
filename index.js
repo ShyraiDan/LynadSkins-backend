@@ -15,9 +15,7 @@ import {
 } from './Controllers/index.js'
 
 mongoose
-	.connect(
-		'mongodb+srv://danshirayy:1234567Qq@cluster0.cawe89m.mongodb.net/lynadskins?retryWrites=true&w=majority'
-	)
+	.connect(process.env.MONGODB_URI)
 	.then(() => {
 		console.log('DB OK')
 	})
@@ -91,7 +89,7 @@ app.post('/skins', checkAuth, SkinController.create)
 app.get('/myskins', checkAuth, SkinController.getUserSkins)
 app.patch('/skins/:id', checkAuth, SkinController.updateSkin)
 
-app.listen(4444, (err) => {
+app.listen(process.env.PORT || 4444, (err) => {
 	if (err) {
 		return console.log(err)
 	}
