@@ -85,7 +85,8 @@ app.patch(
 )
 
 // skins
-app.get('/skins', SkinController.getAll)
+// app.get('/skins', SkinController.getAll)
+app.post('/Nskins', SkinController.getAll)
 app.post('/skins', checkAuth, SkinController.create)
 app.get('/myskins', checkAuth, SkinController.getUserSkins)
 app.patch('/skins/:id', checkAuth, SkinController.updateSkin)

@@ -3,6 +3,7 @@ import SkinModel from '../models/Skin.js'
 export const getAll = async (req, res) => {
 	try {
 		const skins = await SkinModel.find({
+			user: { $ne: req.body.user },
 			onTrade: true,
 		})
 
