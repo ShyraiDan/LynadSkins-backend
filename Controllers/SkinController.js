@@ -88,7 +88,7 @@ export const updateSkin = async (req, res) => {
 				color: req.body.color.split(','),
 				imageUrl: req.body.imageUrl,
 				onTrade: req.body.onTrade,
-				user: req.userId,
+				user: req.body.user,
 			}
 		).then(() =>
 			res.json({
