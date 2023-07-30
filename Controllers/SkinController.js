@@ -4,6 +4,24 @@ export const getAll = async (req, res) => {
 	try {
 		const skins = await SkinModel.find({
 			user: { $ne: req.body.user },
+			itemName: req.query.itemName || { $ne: '' },
+			skinName: req.query.skinName || { $ne: '' },
+			exterior: req.query.exterior || { $ne: '' },
+			rarity: req.query.rarity || { $ne: '' },
+			type: req.query.type || { $ne: '' },
+			statTrak: req.query.statTrak || {
+				$in: [true, false],
+			},
+			souvenir: req.query.souvenir || { $in: [true, false] },
+			price: (req.query.price && {
+				$gt: Number(req.query.price.split('-')[0]),
+				$lt: Number(req.query.price.split('-')[1]),
+			}) || { $gte: 0 },
+			float: (req.query.float && {
+				$gt: Number(req.query.float.split('-')[0]),
+				$lt: Number(req.query.float.split('-')[1]),
+			}) || { $gte: 0 },
+			color: req.query.color || { $ne: '' },
 			onTrade: true,
 		})
 
