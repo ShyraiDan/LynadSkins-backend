@@ -15,10 +15,7 @@ import {
 } from './Controllers/index.js'
 
 mongoose
-	//.connect(process.env.MONGODB_URI)
-	.connect(
-		'mongodb+srv://danshirayy:1234567Qq@cluster0.cawe89m.mongodb.net/lynadskins?retryWrites=true&w=majority'
-	)
+	.connect(process.env.MONGODB_URI)
 	.then(() => {
 		console.log('DB OK')
 	})
