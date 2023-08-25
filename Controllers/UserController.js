@@ -47,7 +47,6 @@ export const login = async (req, res) => {
 			req.body.password,
 			user._doc.passwordHash
 		)
-
 		if (!isValidPass) {
 			return res.status(400).json({ message: 'Login or password incorrect' })
 		}
