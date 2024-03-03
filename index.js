@@ -8,31 +8,24 @@ import { postCreateValidation } from './validations/post.js'
 
 import { checkAuth, handleValidationErrors } from './utils/index.js'
 
-import {
-	PostController,
-	SkinController,
-	UserController,
-} from './Controllers/index.js'
+import { PostController, SkinController, UserController } from './Controllers/index.js'
 
 mongoose
-	//.connect(process.env.MONGODB_URI)
-	.connect(
-		'mongodb+srv://danshirayy:1234567Qq@cluster0.cawe89m.mongodb.net/lynadskins?retryWrites=true&w=majority'
-	)
-	.then(() => {
-		console.log('DB OK')
-	})
-	.catch((err) => console.log('DB error', err))
+  .connect(process.env.MONGODB_URI)
+  .then(() => {
+    console.log('DB OK')
+  })
+  .catch((err) => console.log('DB error', err))
 
 const app = express()
 
 const storage = multer.diskStorage({
-	destination: (_, __, cb) => {
-		cb(null, 'uploads')
-	},
-	filename: (_, file, cb) => {
-		cb(null, file.originalname)
-	},
+  destination: (_, __, cb) => {
+    cb(null, 'uploads')
+  },
+  filename: (_, file, cb) => {
+    cb(null, file.originalname)
+  }
 })
 
 const upload = multer({ storage })
@@ -42,18 +35,8 @@ app.use(cors())
 app.use('/uploads', express.static('uploads'))
 
 // auth / login
-app.post(
-	'/auth/login',
-	loginValidation,
-	handleValidationErrors,
-	UserController.login
-)
-app.post(
-	'/auth/register',
-	registerValidation,
-	handleValidationErrors,
-	UserController.register
-)
+app.post('/auth/login', loginValidation, handleValidationErrors, UserController.login)
+app.post('/auth/register', registerValidation, handleValidationErrors, UserController.register)
 app.get('/auth/me', checkAuth, UserController.getMe)
 app.patch('/auth/me', checkAuth, UserController.update)
 
@@ -62,28 +45,16 @@ app.patch('/userMoney', UserController.updateMoney)
 
 // posts
 app.post('/upload', checkAuth, upload.single('image'), (req, res) => {
-	res.json({
-		url: `/uploads/${req.file.originalname}`,
-	})
+  res.json({
+    url: `/uploads/${req.file.originalname}`
+  })
 })
 app.get('/posts', PostController.getAll)
 app.get('/tags', PostController.getLastTags)
 app.get('/posts/:id', PostController.getOne)
-app.post(
-	'/posts',
-	checkAuth,
-	postCreateValidation,
-	handleValidationErrors,
-	PostController.create
-)
+app.post('/posts', checkAuth, postCreateValidation, handleValidationErrors, PostController.create)
 app.delete('/posts/:id', checkAuth, PostController.remove)
-app.patch(
-	'/posts/:id',
-	checkAuth,
-	postCreateValidation,
-	handleValidationErrors,
-	PostController.update
-)
+app.patch('/posts/:id', checkAuth, postCreateValidation, handleValidationErrors, PostController.update)
 
 // skins
 app.post('/Nskins', SkinController.getAll)
@@ -91,9 +62,9 @@ app.post('/skins', checkAuth, SkinController.create)
 app.get('/myskins', checkAuth, SkinController.getUserSkins)
 app.patch('/skins/:id', SkinController.updateSkin)
 
-app.listen(process.env.PORT || 4444, (err) => {
-	if (err) {
-		return console.log(err)
-	}
-	console.log('Server Ok')
+app.listen(process.env.PORT || 5555, (err) => {
+  if (err) {
+    return console.log(err)
+  }
+  console.log('Server Ok')
 })
